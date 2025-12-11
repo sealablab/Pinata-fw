@@ -127,36 +127,70 @@ Hardware only
 
 ## Building Pinata Firmware
 
-You can build pinata firmware either using wsl or on a native linux machine. The description bellow is based on an
-UBUNTU 22.04 machine. These steps will also work for wsl, but to get access to the Pinata board in wsl, see the 
-troubleshooting steps about Windows and wsl.
+### Quick Start
+
+Check your environment and build:
+
+```sh
+./scripts/check-toolchain.sh    # Verify toolchain is installed
+cmake --preset linux            # Configure (or: macos, portable, ci)
+cmake --build --preset linux    # Build
+```
+
+Output binaries are in `build/src/` (classic.elf, hw.elf, pqc.elf).
 
 ### Requirements
 
-For cross - compiling the STM32F4Discovery board, you will need a `gcc-arm-none-eabi` toolchain and `cmake`
+#### Ubuntu/Debian
 ```sh
-sudo apt-get install gcc-arm-none-eabi cmake
+sudo apt-get install gcc-arm-none-eabi libnewlib-arm-none-eabi cmake dfu-util
 ```
 
-For flashing the STM32F4Discovery board, you will need the dfu-util toolkit:
+#### macOS (Homebrew)
 ```sh
-sudo apt-get install dfu-util
+brew tap osx-cross/arm
+brew install arm-gcc-bin@14
 ```
 
-### Cross-compiling the firmware
-
-For cross-compiling pinata:
-
+#### Portable (Any Platform, No Root)
 ```sh
-cmake -DCMAKE_TOOLCHAIN_FILE=gcc-arm-none-eabi.toolchain.cmake -S. -Bbuild && cmake --build build
+./scripts/download-toolchain.sh
 ```
 
-This will compile all Pinata variations. Output binaries can be found in the `build` folder.
+This downloads the official ARM GNU Toolchain to `$HOME/arm-gnu-toolchain`.
 
-Example of compiling a particular firmware:
+### Build with CMake Presets
+
+| Preset | Platform | Use Case |
+|--------|----------|----------|
+| `linux` | Linux | System-installed toolchain |
+| `macos` | macOS | Homebrew toolchain |
+| `portable` | Any | Downloaded toolchain (`$HOME/arm-gnu-toolchain`) |
+| `ci` | Any | CI/CD environments |
 
 ```sh
- cmake --build build --target classic_bin
+# Configure and build
+cmake --preset <preset-name>
+cmake --build --preset <preset-name>
+
+# Build specific target
+cmake --build --preset linux --target classic_bin
+
+# Verbose output
+cmake --build --preset linux-verbose
+```
+
+### Legacy Build (without presets)
+
+```sh
+cmake -DCMAKE_TOOLCHAIN_FILE=gcc-arm-none-eabi.toolchain.cmake -S. -Bbuild
+cmake --build build
+```
+
+Build a specific firmware variant:
+
+```sh
+cmake --build build --target classic_bin
 ```
 
 ### Flashing the firmware
@@ -186,6 +220,62 @@ Note that this command also makes sure the firmware binary is up-to-date, so for
 ## Testing
 
 For more information on testing Pinata functionality, see [PinataTests/README.md](PinataTests/README.md).
+
+## Scripts
+
+Helper scripts in `scripts/`:
+
+| Script | Purpose |
+|--------|---------|
+| `check-toolchain.sh` | Verify ARM toolchain is installed and configured |
+| `download-toolchain.sh` | Download ARM GNU Toolchain (no root required) |
+
+### check-toolchain.sh
+
+Validates your build environment and provides installation guidance:
+
+```sh
+./scripts/check-toolchain.sh
+```
+
+Example output:
+```
+=== ARM Toolchain Check ===
+
+ARM Cross-Compiler:
+  arm-none-eabi-gcc    [OK] arm-none-eabi-gcc (Arm GNU Toolchain 14.2.Rel1) 14.2.1
+
+Build Tools:
+  cmake                [OK] cmake version 3.28.3
+  make                 [OK] GNU Make 4.3
+
+=== All required tools found ===
+```
+
+### download-toolchain.sh
+
+Downloads the official ARM GNU Toolchain for environments without package manager access (CI, containers, restricted systems):
+
+```sh
+./scripts/download-toolchain.sh
+```
+
+Installs to `$HOME/arm-gnu-toolchain`. Then build with:
+
+```sh
+cmake --preset portable
+cmake --build --preset portable
+```
+
+### CI/Cloud Environments
+
+For network-isolated environments (like some CI runners), the toolchain must be either:
+1. Pre-installed in the container image, or
+2. Downloaded if network is available:
+
+```sh
+./scripts/download-toolchain.sh && cmake --preset ci && cmake --build --preset ci
+```
 
 ## Troubleshooting
 

@@ -39,6 +39,9 @@ sim_build/
 *.fst
 results.xml
 
+# CMake user presets (personal overrides)
+CMakeUserPresets.json
+
 # Python artifacts
 __pycache__/
 *.pyc

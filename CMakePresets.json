@@ -1,0 +1,78 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build",
+      "toolchainFile": "${sourceDir}/gcc-arm-none-eabi.toolchain.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel"
+      }
+    },
+    {
+      "name": "macos",
+      "inherits": "base",
+      "displayName": "macOS",
+      "description": "Build for ARM Cortex-M4 (auto-detects Homebrew toolchain)",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Darwin" }
+    },
+    {
+      "name": "linux",
+      "inherits": "base",
+      "displayName": "Linux",
+      "description": "Build for ARM Cortex-M4 (auto-detects system toolchain)",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" }
+    },
+    {
+      "name": "portable",
+      "inherits": "base",
+      "displayName": "Portable Toolchain",
+      "description": "Use toolchain from $HOME/arm-gnu-toolchain (run scripts/download-toolchain.sh first)",
+      "environment": {
+        "ARM_TOOLCHAIN_DIR": "$penv{HOME}/arm-gnu-toolchain"
+      }
+    },
+    {
+      "name": "ci",
+      "inherits": "portable",
+      "displayName": "CI/CD",
+      "description": "For CI environments - uses portable toolchain location"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "macos",
+      "configurePreset": "macos",
+      "displayName": "macOS Build"
+    },
+    {
+      "name": "macos-verbose",
+      "configurePreset": "macos",
+      "displayName": "macOS Build (Verbose)",
+      "verbose": true
+    },
+    {
+      "name": "linux",
+      "configurePreset": "linux",
+      "displayName": "Linux Build"
+    },
+    {
+      "name": "linux-verbose",
+      "configurePreset": "linux",
+      "displayName": "Linux Build (Verbose)",
+      "verbose": true
+    },
+    {
+      "name": "portable",
+      "configurePreset": "portable",
+      "displayName": "Portable Build"
+    },
+    {
+      "name": "ci",
+      "configurePreset": "ci",
+      "displayName": "CI Build"
+    }
+  ]
+}

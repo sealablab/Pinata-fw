@@ -8,28 +8,49 @@ Pinata is firmware for an ARM Cortex-M4F development board (STM32F4Discovery) de
 
 ## Build Commands
 
-### Requirements
+### Check Environment
 ```sh
-# Ubuntu/Debian
-sudo apt-get install gcc-arm-none-eabi cmake dfu-util
+./scripts/check-toolchain.sh    # Verify toolchain is installed
 ```
 
-### Cross-compile firmware
+### Install Toolchain
+
 ```sh
-cmake -DCMAKE_TOOLCHAIN_FILE=gcc-arm-none-eabi.toolchain.cmake -S. -Bbuild && cmake --build build
+# Ubuntu/Debian
+sudo apt-get install gcc-arm-none-eabi libnewlib-arm-none-eabi cmake dfu-util
+
+# macOS (Homebrew)
+brew tap osx-cross/arm && brew install arm-gcc-bin@14
+
+# Portable (any platform, no root)
+./scripts/download-toolchain.sh
+```
+
+### Cross-compile firmware (using presets)
+```sh
+cmake --preset linux      # or: macos, portable, ci
+cmake --build --preset linux
 ```
 
 ### Build specific target
 ```sh
-cmake --build build --target classic_bin    # Build classic firmware binary
-cmake --build build --target hw_bin         # Build hardware crypto variant
-cmake --build build --target pqc_bin        # Build post-quantum crypto variant
+cmake --build --preset linux --target classic_bin    # Classic firmware binary
+cmake --build --preset linux --target hw_bin         # Hardware crypto variant
+cmake --build --preset linux --target pqc_bin        # Post-quantum crypto variant
 ```
 
 ### Flash to device
 ```sh
-cmake --build build --target classic_flash  # Also rebuilds if needed
+cmake --build --preset linux --target classic_flash  # Also rebuilds if needed
 ```
+
+### Available Presets
+| Preset | Platform | Description |
+|--------|----------|-------------|
+| `linux` | Linux | System-installed toolchain |
+| `macos` | macOS | Homebrew toolchain |
+| `portable` | Any | `$HOME/arm-gnu-toolchain` |
+| `ci` | Any | CI/CD environments |
 
 ## Testing
 
@@ -110,5 +131,22 @@ Note: `HW_CRYPTO_PRESENT` and `VARIANT_PQC` cannot be combined.
 
 - Build optimization: MinSizeRel (size-optimized for firmware constraints)
 - Random signing for Dilithium: Enable with `-DRANDOM_SIGNING=ON`
-- Custom toolchain prefix: Set via CMake `PREFIX` variable
 - Third-party licenses auto-generated in `ThirdPartyLicenses.txt`
+
+### Toolchain Configuration
+
+The toolchain auto-detects common paths. Override with environment variables:
+
+| Variable | Description |
+|----------|-------------|
+| `ARM_TOOLCHAIN_DIR` | Root of extracted toolchain (e.g., `$HOME/arm-gnu-toolchain`) |
+| `ARM_PREFIX` | Full prefix path (e.g., `/usr/bin/arm-none-eabi-`) |
+
+Or pass directly to CMake: `-DPREFIX=/path/to/arm-none-eabi-`
+
+### Helper Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/check-toolchain.sh` | Validate build environment |
+| `scripts/download-toolchain.sh` | Download ARM toolchain (no root required) |
