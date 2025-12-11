@@ -1,0 +1,30 @@
+{
+    "name": "Pinata Firmware Development",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cmake-tools",
+                "marus25.cortex-debug",
+                "dan-c-underwood.arm",
+                "twxs.cmake"
+            ],
+            "settings": {
+                "cmake.configureArgs": [
+                    "-DCMAKE_TOOLCHAIN_FILE=${workspaceFolder}/gcc-arm-none-eabi.toolchain.cmake"
+                ],
+                "C_Cpp.default.compilerPath": "/usr/bin/arm-none-eabi-gcc",
+                "cortex-debug.armToolchainPath": "/usr/bin"
+            }
+        }
+    },
+    "postCreateCommand": "cmake -DCMAKE_TOOLCHAIN_FILE=gcc-arm-none-eabi.toolchain.cmake -S. -Bbuild",
+    "remoteUser": "vscode"
+}

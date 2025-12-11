@@ -1,7 +1,21 @@
+---
+created: 2025-12-11
+modified: 2025-12-11 16:02:04
+accessed: 2025-12-11 16:01:39
+tags:
+  - SCA
+  - FI
+  - RISCURE
+---
 # Pinata board
 
-Pinata is a development board (ARM Cortex-M4F) that has been modified and programmed in order to be a training target 
-for Side Channel Analysis (SCA) and Fault Injection (FI) attacks.
+# [Pinata-Fw](https://github.com/sealablab/Pinata-fw) 
+
+
+This [repo](https://github.com/sealablab/Pinata-fw) exists to be an AI/LLM/Container friendly fork of the [upstream Pinata firmware](https://github.com/Keysight/Pinata)
+
+
+Pinata is a development board (ARM Cortex-M4F) that has been modified and programmed in order to be a training target for Side Channel Analysis (SCA) and Fault Injection (FI) attacks.
 
 ## Features
 
