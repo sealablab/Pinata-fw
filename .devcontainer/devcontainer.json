@@ -13,8 +13,7 @@
                 "ms-vscode.cpptools",
                 "ms-vscode.cmake-tools",
                 "marus25.cortex-debug",
-                "dan-c-underwood.arm",
-                "twxs.cmake"
+                "dan-c-underwood.arm"
             ],
             "settings": {
                 "cmake.useCMakePresets": "always",
