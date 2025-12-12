@@ -1,7 +1,7 @@
 ---
 created: 2025-12-11
-modified: 2025-12-11 16:49:18
-accessed: 2025-12-11 16:43:59
+modified: 2025-12-11 16:49:40
+accessed: 2025-12-11 17:14:52
 ---
 # [README](Pinata-fw/docs/README.md)
 This [repo](https://github.com/sealablab/Pinata-fw) exists to be an AI/LLM/Container friendly fork of the [upstream Pinata firmware](https://github.com/Keysight/Pinata)

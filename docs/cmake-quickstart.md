@@ -1,7 +1,7 @@
 ---
 created: 2025-12-11
-modified: 2025-12-11 16:49:23
-accessed: 2025-12-11 16:49:23
+modified: 2025-12-11 16:49:27
+accessed: 2025-12-11 17:14:50
 ---
 # [cmake-quickstart](https://code.visualstudio.com/docs/cpp/cmake-quickstart)
 
