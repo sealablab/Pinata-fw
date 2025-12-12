@@ -108,4 +108,29 @@ openocd -f openocd/tigard-swd.cfg \
 - **Permission denied**: Run `sudo usermod -aG plugdev $USER` and re-login
 - **Device not found**: Check `lsusb` for `0403:6010` (FTDI FT2232H)
 
+## VS Code Integration
+
+The repository includes full VS Code integration for building and debugging:
+
+### Build Tasks (`Ctrl+Shift+B`)
+
+- **Build: Classic/HW/PQC Firmware** - compile specific variants
+- **Flash: Classic/HW/PQC Firmware** - build and flash via DFU
+
+See [vscode-tasks](vscode-tasks.md) for details.
+
+### Debugging (`F5`)
+
+- Set breakpoints by clicking in the gutter
+- Step through code with F10/F11
+- Inspect variables, memory, and peripheral registers
+
+See [vscode-debugging](vscode-debugging.md) for setup and usage.
+
 # See also
+- [vscode-debugging](vscode-debugging.md) - Breakpoints, stepping, peripherals
+- [vscode-tasks](vscode-tasks.md) - Build and flash tasks
+- [cmake-quickstart](cmake-quickstart.md) - CMake basics
+- [CMakePresets](CMAKEPresets.md) - Platform-specific build presets
+- [arm-none-eabi-gcc](arm-none-eabi-gcc.md) - Toolchain installation
+- [PinataFW-codespace](PinataFW-codespace.md) - GitHub Codespaces guide
