@@ -6,6 +6,7 @@ accessed: 2025-12-11 17:14:52
 # [README](Pinata-fw/docs/README.md)
 This [repo](https://github.com/sealablab/Pinata-fw) exists to be an AI/LLM/Container friendly fork of the [upstream Pinata firmware](https://github.com/Keysight/Pinata)
 
+
 ## Container-First Development
 
 This repository includes a devcontainer configuration that provides a complete development environment with:
